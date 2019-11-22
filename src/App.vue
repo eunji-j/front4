@@ -2,6 +2,8 @@
   <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
+      <router-link to="/">상황별</router-link> |
+      <router-link to="/">분위기별</router-link> |
       <router-link to="/login">Login</router-link> |
       <router-link to="/signup">Signup</router-link>
     </div>
