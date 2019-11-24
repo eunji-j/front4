@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="container card">
-      <h1>TOP 10</h1>
+    <div>
+      <h4 class="d-flex">TOP 10</h4>
       <div class="row">
         <MovieListItem v-for="movie in movies" :key="movie.id" :movie='movie'/>
       </div>

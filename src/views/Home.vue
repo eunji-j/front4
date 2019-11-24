@@ -1,22 +1,24 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <MovieList :movies="movies"/>
+    <MovieList :movies="movies" :genres="genres"/>
+    <Genre />
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import MovieList from '../components/MovieList.vue'
+import Genre from '../components/Genre.vue'
 export default {
   name: 'home',
   components: {
-    MovieList
+    MovieList,
+    Genre
   },
   data(){
     return {
       movies: [],
-      genres : []
+      genres: []
     }
   },
   mounted() {
@@ -27,7 +29,15 @@ export default {
       })
       .catch((e)=>{
         console.log(e)
+      }) 
+    const GENRE_URL = 'http://localhost:8000/api/v1/movies/genres/'
+    axios.get(GENRE_URL)
+      .then((res)=>{
+          this.genres = res.data
       })
-  }
+      .catch((e)=>{
+          console.log(e)
+      })
+  }  
 }
 </script>

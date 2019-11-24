@@ -7,12 +7,11 @@
       <router-link to="/login">Login</router-link> |
       <router-link to="/signup">Signup</router-link>
     </div>
-    <div>
+    <div class="px-5">
       <router-view/>
     </div>
   </div>
 </template>
-
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;

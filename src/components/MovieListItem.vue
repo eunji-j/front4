@@ -1,6 +1,6 @@
 <template>
-    <div class="col-3">
-      <img :src=movie.image alt="">
+    <div class="col-2 text-center">
+      <img :src=movie.image width="100%">
       <p>{{movie.title}}</p>
     </div>
 </template>
