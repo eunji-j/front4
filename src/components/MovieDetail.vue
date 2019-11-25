@@ -28,7 +28,7 @@
     <div class="mt-5">
       <h4>비슷한 작품</h4>
       <div v-for="(movie2, index) in similarMovie" :key="`movie2-${index}`" class="col-2">
-        <div v-if="movie.title!==movie2.title">
+        <div v-if="movie.title !== movie2.title">
           <img :src=movie2.image width="100%" alt="">
           <p class="text-center">{{movie2.title}}</p>
         </div>

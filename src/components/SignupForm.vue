@@ -22,6 +22,8 @@
 
 <script>
 import axios from 'axios'
+import router from '../router'
+
 export default {
     data(){
         return {
@@ -52,6 +54,7 @@ export default {
                 axios.post('http://localhost:8000/api/v1/accounts/signup/', form)
                     .then((res)=>{
                         console.log(res)
+                        router.push('/login')
                     })
                     .catch((e)=>{
                         console.log(e)
@@ -60,11 +63,12 @@ export default {
         },
         checkForm(){
             this.errors = []
-            if (this.password != this.password2){return true}
-            else {
-                if (this.credential.password.length < 8) {this.errors.push('비밀번호는 8글자가 넘어야합니다.')}
-            }
+            if (this.password.length < 8 || this.credential.password2.length < 8) {this.errors.push('비밀번호는 8글자가 넘어야합니다.')}
             if (!this.credential.username) {this.errors.push('아이디를 입력해주세요.')}
+            if (!this.credential.checkedGenres.length) {this.errors.push('좋아하는 장르를 선택해주세요.')}
+            if (this.password === this.credential.password2){
+                if(!this.errors.length){return true}
+            }
         }
     },
     mounted(){

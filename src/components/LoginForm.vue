@@ -35,6 +35,7 @@ export default {
         login(){
             if (this.checkForm()){
                 console.log('로그인 시도')
+                console.log(this.credential)
                 axios.post('http://localhost:8000/api-token-auth/', this.credential)
                     .then((res)=>{
                         this.loading = true
@@ -45,8 +46,8 @@ export default {
                         router.push('/')
                     })
                     .catch((e)=>{
-                        this.loading = true
                         console.log(e)
+                        this.errors.push('로그인 실패')
                     })
             }
         },
@@ -56,9 +57,7 @@ export default {
             if (this.credential.password.length < 8) {this.errors.push('비밀번호는 8글자가 넘어야합니다.')}
             if (!this.credential.username) {this.errors.push('아이디를 입력해주세요.')}
             console.log(this.errors)
-            if (this.errors.length === 0) {
-                return true
-            }
+            if (this.errors.length === 0) {return true}
         }
     }
 }
