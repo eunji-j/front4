@@ -9,12 +9,12 @@
         <input class="form-control col-6 offset-3 my-3" type="password" v-model="credential.password2" placeholder="password">
         <div>
           <div v-for="genre in genres" :key="genre.id" class="form-control d-inline">
-            <input type="checkbox" :id=genre.name :value=genre.id v-model="checkedGenres">
+            <input type="checkbox" :id=genre.name :value=genre.id v-model="credential.checkedGenres">
             <label :for=genre.name>{{genre.name}}</label>
           </div>
         </div>
         <br>
-        <span>체크한 이름: {{ checkedGenres }}</span>
+        <span>체크한 이름: {{ credential.checkedGenres }}</span>
       </div>
       <button class="btn btn-primary" @click="signup">회원가입</button>
   </div>
@@ -30,16 +30,26 @@ export default {
             credential: {
                 username: '',
                 password2: '',
+                checkedGenres: []
             },
             errors: [],
-            checkedGenres: []
+            
         }
     },
     methods: {
         signup(){
             console.log('회원가입 시도')
+            let form = new FormData() 
+            form.append('username', this.credential.username) 
+            form.append('password',this.credential.password2)
+            // 여러개의 선택값을 하나씩 넘겨준다.
+            for (let i=0; i<this.credential.checkedGenres.length; i++) {
+                form.append('like_genres',this.credential.checkedGenres[i])
+            }
+
             if (this.checkForm()){
-                axios.post('http://localhost:8000/api/v1/accounts/signup/', this.credential)
+                console.log(this.credential)
+                axios.post('http://localhost:8000/api/v1/accounts/signup/', form)
                     .then((res)=>{
                         console.log(res)
                     })
