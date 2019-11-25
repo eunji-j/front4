@@ -25,9 +25,14 @@
       <img :src="movie.image" style="width:50%; opacity:0.5;">
     </div>
 
-    <div>
+    <div class="mt-5">
       <h4>비슷한 작품</h4>
-
+      <div v-for="(movie2, index) in similarMovie" :key="`movie2-${index}`" class="col-2">
+        <div v-if="movie.title!==movie2.title">
+          <img :src=movie2.image width="100%" alt="">
+          <p class="text-center">{{movie2.title}}</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -60,8 +65,7 @@ export default {
       
     axios.get(`http://localhost:8000/api/v1/movies/hashtags/${this.movieId.id}`)
       .then((res)=>{
-        console.log(res)
-        this.similarMovie.append(res)
+        this.similarMovie = res.data
       })
       .catch((e)=>{
         console.log(e)
