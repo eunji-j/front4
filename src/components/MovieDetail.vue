@@ -1,5 +1,17 @@
 <template>
   <div class="row text-white text-left">
+    
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-header">
+        <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <iframe width="100%" height="600" :src="`${movie.video}?autoplay=1`" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+
     <div class="col-5 mt-4">
       <h1 class="display-4">{{movie.title}}</h1>
       <p class="lead">{{movie.title_en}}</p>
@@ -13,9 +25,8 @@
       <!-- <p class="lead">개봉일 | {{movie.date|date:'Y-m-d'}}</p>  -->
 
       <div class="my-4">
-        <!-- <button class="btn btn-secondary btn-lg mr-2">목록</button>
-        <button class="btn btn-primary btn-lg mr-2">수정</button> -->
-        <button class="btn btn-danger btn-lg mr-4">재생</button>
+        <button class="btn btn-danger btn-lg mr-4" data-toggle="modal" data-target="#exampleModal">재생</button>
+
         <h4 class="d-inline" @click="like" v-if="ok" style="color: red;"><i class="fas fa-check" style="color: red;"></i> 보고싶어요</h4>
         <h4 class="d-inline" @click="like" v-else><i class="fas fa-plus"></i> 보고싶어요</h4>
       </div>
@@ -26,6 +37,7 @@
       <img :src="movie.image" style="width:50%; opacity:0.5;">
     </div>
 
+    
     <div class="mt-5">
       <h4>비슷한 작품</h4>
       <div class="d-flex">
@@ -38,7 +50,6 @@
       </div>
     </div>
   </div>
-
 </template>
 
 <script>
@@ -94,29 +105,6 @@ export default {
     detail(id){
       this.$router.push(`/detail?id=${id}`)
     }
-    // checkLike(){
-    //   this.$session.start()
-    //   const token = this.$session.get('jwt')
-    //   const userId = this.token.user_id
-
-    //   const requestHeader = {
-    //     headers: {
-    //       Authorization: 'JWT ' + token
-    //     }
-    //   }
-    //   const form = new FormData()
-    //   form.append('userId', userId)
-
-    //   axios.post(`http://localhost:8000/api/v1/movies/${this.movieId.id}/like/`,form, requestHeader)
-    //     .then((res)=>{
-    //       console.log(res)
-    //       this.ok = res.is_ok
-    //     })
-    //     .catch((e)=>{
-    //       console.log(e)
-    //     })
-      
-    // }
   },
   mounted() {
     this.$session.start()
@@ -154,15 +142,6 @@ export default {
     }
     this.isAthenticated = this.$session.has('jwt')
   },
-  // computed: {
-  //   ok: function(){
-  //     for (let i=0; i<this.movie.like_users.length; i++){
-  //       if (this.movie.like_users[i] == this.userId){
-  //         return true
-  //       }
-  //     }return false
-  //   }
-  // }
 }
 </script>
 
