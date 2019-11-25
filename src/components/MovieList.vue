@@ -11,7 +11,6 @@
 </template>
 
 <script>
-// import axios from 'axios'
 import MovieListItem from './MovieListItem.vue'
 
 export default {
