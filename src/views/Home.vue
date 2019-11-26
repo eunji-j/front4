@@ -1,19 +1,20 @@
 <template>
   <div class="home">
+    <h4 class="d-flex text-light mt-5">TOP 10</h4>
     <MovieList :movies="movies" :genres="genres"/>
-    <Genre />
+    <GenreList :genres="genres"/>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import MovieList from '../components/MovieList.vue'
-import Genre from '../components/Genre.vue'
+import GenreList from '../components/GenreList.vue'
 export default {
   name: 'home',
   components: {
     MovieList,
-    Genre
+    GenreList,
   },
   data(){
     return {

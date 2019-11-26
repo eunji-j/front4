@@ -1,10 +1,10 @@
 <template>
-  <div class="row text-white text-left">
+  <div class="row text-white text-left mt-5">
     
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-header">
         <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true">&#10006;</span>
         </button>
       </div>
       <div class="modal-body">
@@ -23,20 +23,19 @@
       <h5 v-for="genre in movie.genres" :key="genre.id" class="lead d-inline">{{genre.name}}|</h5>
       <!-- <p class="lead">{{movie.open_year}}</p>  -->
 
-      <div class="my-4">
-        <button class="btn btn-danger btn-lg mr-4" data-toggle="modal" data-target="#exampleModal">재생</button>
-
+      <div class="my-5">
+        <button class="btn btn-danger btn-lg mr-4" data-toggle="modal" data-target="#exampleModal">▶ 재생</button>
         <h4 class="d-inline" @click="like" v-if="ok" style="color: red;"><i class="fas fa-check" style="color: red;"></i> 보고싶어요</h4>
         <h4 class="d-inline" @click="like" v-else><i class="fas fa-plus"></i> 보고싶어요</h4>
       </div>
-      <p v-for="(hashtag, index) in movie.hashtags" :key="`hashtag-${index}`" class="d-inline mr-3 text-primary"># {{hashtag.content}}</p>
+      <h5 v-for="(hashtag, index) in movie.hashtags" :key="`hashtag-${index}`" class="d-inline mr-3 text-primary"># {{hashtag.content}}</h5>
+      <span v-for="star in stars" :key="`star-${star}`" @click="change(star)"><i class="far fa-star"></i></span>
     </div>
 
     <div class="col-7">
       <img :src="movie.image" style="width:50%; opacity:0.5;">
     </div>
 
-    
     <div class="mt-5">
       <h4>비슷한 작품</h4>
       <div class="d-flex">
@@ -62,7 +61,8 @@ export default {
       similarMovie: [],
       isAthenticated: this.$session.has('jwt'),
       userId: '',
-      ok: ''
+      ok: '',
+      stars: 5,
     }
   },
   methods: {
@@ -133,11 +133,11 @@ export default {
     }
   },
   updated(){
-    // 영화의 like_users에 로그인한 유저가 있는경우 ok는 true
-    if (this.movie){
-      // console.log(this.movie.like_users.length)
-      for (let i=0; i<this.movie.like_users.length; i++){
-        if (this.movie.like_users[i] == this.userId){
+    // 영화의 users에 로그인한 유저가 있는경우 ok는 true
+    if (this.movieId.id !== undefined && this.movie.users !== undefined){
+      // console.log(this.movie.users.length)
+      for (let i=0; i<this.movie.users.length; i++){
+        if (this.movie.users[i] == this.userId){
           this.ok = true
         }
       }

@@ -1,7 +1,9 @@
 <template>
-    <div class="col-2 text-center" @click="detail">
-      <img :src=movie.image width="100%" alt="이미지가 없습니다.">
-      <p>{{movie.title}}</p>
+    <div class="col-2 text-center text-light" @click="detail">
+      <div>
+        <img :src=movie.image width="100%" alt="이미지가 없습니다.">
+        <p>{{movie.title}}</p>
+      </div>
     </div>
 </template>
 

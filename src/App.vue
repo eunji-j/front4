@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: black;">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: black; height: 80px;">
       <router-link to="/" class="navbar-brand">DoDoPlay</router-link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -57,6 +57,7 @@
 
 <script>
 import jwtDecode from 'jwt-decode'
+import router from './router'
 export default {
   name: 'App',
   data() {
@@ -69,7 +70,7 @@ export default {
   methods: {
     logout: function(){
       this.$session.destroy()
-      this.$router.push('/login')
+      router.push('/login')
     },
   },
   mounted(){
