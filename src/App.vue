@@ -22,11 +22,12 @@
           </form>
           <div v-if="isAuthenticated" class="d-flex">
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Dropdown
+              <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{username}} 님
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <router-link class="dropdown-item" to="/">MyPage</router-link>
+                <!-- 이름을 가지는 routes에 연결할 때 prop으로 데이터를 전달할 수 있다. router.push()와 같다. -->
+                <router-link class="dropdown-item" v-if="userId" :to="{name:'mypage', params: {userId: `${userId}`}}">MyPage</router-link>
 
                 <a class="dropdown-item" href="#">Action</a>
                 <a class="dropdown-item" href="#">Another action</a>
@@ -50,28 +51,39 @@
       <!-- Vue.js Router 현재 페이지 갱신하기 -->
       <router-view :key="$route.fullPath"/>
     </div>
-</div>
+  </div>
       
 </template>
 
 <script>
+import jwtDecode from 'jwt-decode'
 export default {
   name: 'App',
   data() {
     return {
-      isAuthenticated: this.$session.has('jwt')
+      isAuthenticated: this.$session.has('jwt'),
+      username: '',
+      userId: ''
     }
   },
   methods: {
     logout: function(){
       this.$session.destroy()
       this.$router.push('/login')
+    },
+  },
+  mounted(){
+    if (this.isAuthenticated){
+      this.$session.start()
+      const token = this.$session.get('jwt')
+      const decodedToken = jwtDecode(token)
+      this.username = decodedToken.username
+      this.userId = decodedToken.user_id
     }
   },
   updated() {
     this.isAuthenticated = this.$session.has('jwt')
   }
-
 }
 </script>
 

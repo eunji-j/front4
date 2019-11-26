@@ -8,21 +8,20 @@
         </button>
       </div>
       <div class="modal-body">
-        <iframe width="100%" height="600" :src="`${movie.video}?autoplay=1`" frameborder="0" allowfullscreen></iframe>
+        <iframe width="100%" height="800" :src="`${movie.video}?autoplay=1`" frameborder="0" allowfullscreen></iframe>
       </div>
     </div>
 
     <div class="col-5 mt-4">
       <h1 class="display-4">{{movie.title}}</h1>
-      <p class="lead">{{movie.title_en}}</p>
       <h3 class="d-inline"><span class="badge badge-light mr-2">평균 별점</span></h3><h4 class="d-inline">{{movie.score}}</h4><h5 class="d-inline text-muted ml-3">{{movie.rating}}</h5>
       <hr class="my-4 bg-white">
-      <!-- <p class="lead">{{movie.description}}</p> -->
+      <p class="lead">{{movie.description}}</p>
       <h5><span class="lead mr-4">감독</span>{{movie.director}}</h5>
       <h5><span class="lead mr-4">출연</span>{{movie.actor}}</h5>
       <span class="lead mr-4">장르</span>
       <h5 v-for="genre in movie.genres" :key="genre.id" class="lead d-inline">{{genre.name}}|</h5>
-      <!-- <p class="lead">개봉일 | {{movie.date|date:'Y-m-d'}}</p>  -->
+      <!-- <p class="lead">{{movie.open_year}}</p>  -->
 
       <div class="my-4">
         <button class="btn btn-danger btn-lg mr-4" data-toggle="modal" data-target="#exampleModal">재생</button>
@@ -95,9 +94,7 @@ export default {
     checkLoggedIn(){
       if (!this.isAthenticated){
         alert('로그인 후 이용해주세요.')
-          .then(()=>{
-            this.$router.push('/login')
-          })
+        this.$router.push('/login')
       }else {
         return true
       }
@@ -107,33 +104,38 @@ export default {
     }
   },
   mounted() {
-    this.$session.start()
-    const token = this.$session.get('jwt')
-    const decodedToken = jwtDecode(token)
-    this.userId = decodedToken.user_id
-
     this.movieId = this.$route.query
-    // console.log(this.movieId.id)
-    const MOVIE_URL = `http://localhost:8000/api/v1/movies/detail/${this.movieId.id}/`
-    axios.get(MOVIE_URL)
-      .then((res)=>{
-        this.movie = res.data
-      })
-      .catch((e)=>{
-        console.log(e)
-      })
-      
-    axios.get(`http://localhost:8000/api/v1/movies/hashtags/${this.movieId.id}/`)
-      .then((res)=>{
-        this.similarMovie = res.data
-      })
-      .catch((e)=>{
-        console.log(e)
-      })
+
+    if (this.movieId.id !== undefined){
+      if (this.isAthenticated){
+        this.$session.start()
+        const token = this.$session.get('jwt')
+        const decodedToken = jwtDecode(token)
+        this.userId = decodedToken.user_id
+      }
+
+      const MOVIE_URL = `http://localhost:8000/api/v1/movies/detail/${this.movieId.id}/`
+      axios.get(MOVIE_URL)
+        .then((res)=>{
+          this.movie = res.data
+        })
+        .catch((e)=>{
+          console.log(e)
+        })
+        
+      axios.get(`http://localhost:8000/api/v1/movies/hashtags/${this.movieId.id}/`)
+        .then((res)=>{
+          this.similarMovie = res.data
+        })
+        .catch((e)=>{
+          console.log(e)
+        })
+    }
   },
   updated(){
+    // 영화의 like_users에 로그인한 유저가 있는경우 ok는 true
     if (this.movie){
-      console.log(this.movie.like_users.length)
+      // console.log(this.movie.like_users.length)
       for (let i=0; i<this.movie.like_users.length; i++){
         if (this.movie.like_users[i] == this.userId){
           this.ok = true

@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import MovieDetail from '../components/MovieDetail.vue'
+import Mypage from '../components/Mypage.vue'
 
 Vue.use(VueRouter)
 
@@ -27,6 +28,13 @@ const routes = [
     path: '/detail',
     name: 'detail',
     component: MovieDetail
+  },
+  {
+    // 이름을 가지는 routes
+    path: '/mypage/:userId',
+    name: 'mypage',
+    component: Mypage,
+    props: true
   }
 ]
 
