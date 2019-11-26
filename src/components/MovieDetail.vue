@@ -39,6 +39,7 @@
     </div>
     <div class="text-white text-left mt-5" >
       <Review :movie="movie"/>
+      <ReviewList :reviews="reviews"/>
       <div class="mt-5">
         <h4>비슷한 작품</h4>
         <div class="d-flex">
@@ -58,19 +59,22 @@
 import axios from 'axios'
 import jwtDecode from 'jwt-decode'
 import Review from './Review.vue'
+import ReviewList from './ReviewList.vue'
 export default {
   data() {
     return {
       movieId: '',
-      movie: '',
+      movie: Object,
       similarMovie: [],
       isAthenticated: this.$session.has('jwt'),
       userId: '',
       ok: '',
+      reviews: []
     }
   },
   components: {
-    Review
+    Review,
+    ReviewList
   },
   methods: {
     like(){
@@ -137,6 +141,8 @@ export default {
         .catch((e)=>{
           console.log(e)
         })
+
+      
     }
   },
   updated(){
@@ -150,6 +156,13 @@ export default {
       }
     }
     this.isAthenticated = this.$session.has('jwt')
+    axios.get(`http://localhost:8000/api/v1/movies/${this.movieId.id}/reviews/`)
+      .then((res)=>{
+        this.reviews = res.data
+      })
+      .catch((e)=>{
+        console.log(e)
+      })
   },
 }
 </script>
