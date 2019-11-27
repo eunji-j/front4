@@ -1,5 +1,6 @@
 <template>
   <div>
+      <h4 class="text-light">로그인</h4>
       <div v-if="loading" class="spinner-border" role="status">
           <span class="sr-only">Loading...</span>
       </div>

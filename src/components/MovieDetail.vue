@@ -1,43 +1,44 @@
 <template>
 
   <div>
-    <div class="row text-white text-left mt-5">
+    <div class="row text-white text-left mx-5">
       
-      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-header">
-          <button type="button" class="close text-light" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&#10006;</span>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <iframe width="100%" height="800" :src="`${movie.video}?autoplay=1`" frameborder="0" allowfullscreen></iframe>
+          <iframe width="100%" height="700" :src="`${movie.video}?rel=0;amp;autoplay=1`" frameborder="0" allowfullscreen></iframe>
         </div>
       </div>
 
-      <div class="col-5 mt-4">
+      <div class="col-7">
         <h1 class="display-4">{{movie.title}}</h1>
         <h3 class="d-inline"><span class="badge badge-light mr-2">평균 별점</span></h3><h4 class="d-inline">{{movie.score}}</h4><h5 class="d-inline text-muted ml-3">{{movie.rating}}</h5>
-        <hr class="my-4 bg-white">
+        <!-- <hr class="my-3 bg-white"> -->
+        <br><br>
+        <h5 v-for="(hashtag, index) in movie.hashtags" :key="`hashtag-${index}`" class="d-inline mr-3 text-info"># {{hashtag.content}}</h5>
         <p class="lead">{{movie.description}}</p>
         <h5><span class="lead mr-4">감독</span>{{movie.director}}</h5>
         <h5><span class="lead mr-4">출연</span>{{movie.actor}}</h5>
         <span class="lead mr-4">장르</span>
         <h5 v-for="genre in movie.genres" :key="genre.id" class="lead d-inline">{{genre.name}}|</h5>
         <!-- <p class="lead">{{movie.open_year}}</p>  -->
-
-        <div class="my-5">
-          <button class="btn btn-danger btn-lg mr-4" data-toggle="modal" data-target="#exampleModal">▶ 재생</button>
+        
+        <div class="my-3">
+          <button class="btn btn-danger btn-lg mr-5" style="width:110px;" data-toggle="modal" data-target="#exampleModal">▶ 재생</button>
           <h4 class="d-inline" @click="like" v-if="ok" style="color: red;"><i class="fas fa-check" style="color: red;"></i> 보고싶어요</h4>
-          <h4 class="d-inline" @click="like" v-else><i class="fas fa-plus"></i> 보고싶어요</h4>
+          <h4 class="d-inline align-middle" @click="like" v-else><i class="fas fa-plus"></i> 보고싶어요</h4>
         </div>
-        <h5 v-for="(hashtag, index) in movie.hashtags" :key="`hashtag-${index}`" class="d-inline mr-3 text-primary"># {{hashtag.content}}</h5>
       </div>
 
-      <div class="col-7">
-        <img :src="movie.image" style="width:50%; opacity:0.5;">
+      <div class="col-5">
+        <img :src="movie.image" style="width:65%; opacity:0.7;">
       </div>
     </div>
-    <div class="text-white text-left my-5" >
+    <div class="text-white text-left my-5 mx-5" >
       <Review :movie="movie"/>
       <ReviewList :reviews="reviews"/>
       <div class="my-5">
@@ -122,7 +123,6 @@ export default {
   },
   mounted() {
     this.movieId = this.$route.query
-
     if (this.movieId.id !== undefined){
       if (this.isAthenticated){
         this.$session.start()
@@ -160,7 +160,7 @@ export default {
           this.ok = true
         }
       }
-      this.isAthenticated = this.$session.has('jwt')
+    this.isAthenticated = this.$session.has('jwt')
     }
   },
   watch:{

@@ -1,5 +1,6 @@
 <template>
   <div>
+      <h4 class="text-light">회원가입</h4>
       <div v-if="errors.length" class="alert alert-danger">
           <div v-for="(error, idx) in errors" :key="idx">{{error}}</div>
       </div>
@@ -7,14 +8,15 @@
         <input class="form-control col-6 offset-3 my-3" type="text" v-model="credential.username" placeholder="id">
         <input class="form-control col-6 offset-3 my-3" type="password" v-model="password" placeholder="password">
         <input class="form-control col-6 offset-3 my-3" type="password" v-model="credential.password2" placeholder="password">
-        <div>
-          <div v-for="genre in genres" :key="genre.id" class="form-control d-inline">
+        <p class="text-light d-flex" style="margin-left: 25%;">선호하는 장르</p>
+        <div class="pt-2 bg-light rounded col-6 offset-3 my-3" style="width:50%;">
+          <div v-for="genre in genres" :key="genre.id" class="d-inline mr-2">
             <input type="checkbox" :id=genre.name :value=genre.id v-model="credential.checkedGenres">
             <label :for=genre.name>{{genre.name}}</label>
           </div>
         </div>
         <br>
-        <span>체크한 이름: {{ credential.checkedGenres }}</span>
+        <!-- <span>체크한 이름: {{ credential.checkedGenres }}</span> -->
       </div>
       <button class="btn btn-primary" @click="signup">회원가입</button>
   </div>

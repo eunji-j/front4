@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div>
-      <p v-for="genre in genres" :key="genre.id" @click="setGenre(genre.id)" class="btn btn-outline-primary rounded-pill m-1">{{genre.name}}</p>
+    <h4 class="d-flex text-light mt-5">장르별 차트</h4>
+    <div class="mb-5">
+      <p v-for="genre in genres" :key="genre.id" @click="setGenre(genre.id)" class="btn btn-outline-warning rounded-pill m-1">{{genre.name}}</p>
     </div>
-    <h4 class="d-flex text-light">장르별 차트</h4>
     <MovieList :movies="movies"/>
   </div>
 </template>

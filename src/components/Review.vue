@@ -1,14 +1,14 @@
 <template>
   <div>
     <h4>평점</h4>
-    <div class="form-group d-flex">
+    <div class="form-group d-flex mt-4">
       <div class="mr-3 col-3 text-center">
         <input type="range" class="d-block custom-range" min="0" max="10" v-model="review.star">
-        <font color="white" size=4>{{review.star}}</font>
+        <font color="white" size=4>{{review.star}}점</font>
       </div>
-      <input type="text" class="form-control col-8" v-model="review.content">
-      <input type="submit" class="btn btn-primary ml-2 mb-2" v-if="isAuthenticated" @click="register()">
-      <input type="submit" class="btn btn-primary ml-2 mb-2" v-else @click="checkLogin()">
+      <input type="text" class="form-control col-7" v-model="review.content" placeholder="내용을 입력해주세요.">
+      <input type="submit" class="btn btn-secondary ml-2 mb-2 col-1" v-if="isAuthenticated" @click="register()" value="등록">
+      <input type="submit" class="btn btn-secondary ml-2 mb-2 col-1" v-else @click="checkLogin()" value="등록">
     </div>
   </div>
 </template>
@@ -33,6 +33,7 @@ export default {
     checkLogin(){
       alert('로그인 후 이용해주세요.')
       this.$router.push('/login')
+      this.review.content = ''
     },
     register(){
       this.$session.start()
@@ -54,6 +55,7 @@ export default {
         .catch((e)=>{
           console.log(e)
         })
+      this.review.content = ''
     }
   },
   updated(){
