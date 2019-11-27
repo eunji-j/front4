@@ -14,9 +14,6 @@
           <li class="nav-item active">
             <router-link to="/select" class="nav-link">탐색하기</router-link>
           </li>
-          <li class="nav-item">
-            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-          </li>
           <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="제목, 감독, 배우로 검색">
           </form>
@@ -47,7 +44,7 @@
         </ul>
       </div>
     </nav>
-    <div class="px-5">
+    <div class="px-5 my-5">
       <!-- Vue.js Router 현재 페이지 갱신하기 -->
       <router-view :key="$route.fullPath"/>
     </div>
@@ -82,7 +79,7 @@ export default {
       this.userId = decodedToken.user_id
     }
   },
-  updated() {
+  created() {
     this.isAuthenticated = this.$session.has('jwt')
     if (this.isAuthenticated){
       this.$session.start()

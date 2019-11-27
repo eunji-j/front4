@@ -162,7 +162,6 @@ export default {
       }
       this.isAthenticated = this.$session.has('jwt')
     }
-  
   },
   watch:{
     reviews:{
