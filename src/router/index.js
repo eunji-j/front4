@@ -5,7 +5,7 @@ import Login from '../views/Login.vue'
 import Signup from '../views/Signup.vue'
 import MovieDetail from '../components/MovieDetail.vue'
 import Mypage from '../components/Mypage.vue'
-
+import Select from '../components/Select.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -36,6 +36,11 @@ const routes = [
     component: Mypage,
     props: true
   },
+  {
+    path: '/select',
+    name: 'select',
+    component: Select
+  }
 ]
 
 const router = new VueRouter({

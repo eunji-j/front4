@@ -9,10 +9,10 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <router-link to="/" class="nav-link">홈</router-link>
+            <router-link to='/' class="nav-link">홈</router-link>
           </li>
           <li class="nav-item active">
-            <router-link to="/" class="nav-link">탐색하기</router-link>
+            <router-link to="/select" class="nav-link">탐색하기</router-link>
           </li>
           <li class="nav-item">
             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
@@ -64,7 +64,7 @@ export default {
     return {
       isAuthenticated: this.$session.has('jwt'),
       username: '',
-      userId: ''
+      userId: '',
     }
   },
   methods: {
@@ -84,6 +84,13 @@ export default {
   },
   updated() {
     this.isAuthenticated = this.$session.has('jwt')
+    if (this.isAuthenticated){
+      this.$session.start()
+      const token = this.$session.get('jwt')
+      const decodedToken = jwtDecode(token)
+      this.username = decodedToken.username
+      this.userId = decodedToken.user_id
+    }
   }
 }
 </script>

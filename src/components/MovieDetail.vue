@@ -37,10 +37,10 @@
         <img :src="movie.image" style="width:50%; opacity:0.5;">
       </div>
     </div>
-    <div class="text-white text-left mt-5" >
+    <div class="text-white text-left my-5" >
       <Review :movie="movie"/>
       <ReviewList :reviews="reviews"/>
-      <div class="mt-5">
+      <div class="my-5">
         <h4>비슷한 작품</h4>
         <div class="d-flex">
           <div v-for="(movie2, index) in similarMovie" :key="`movie2-${index}`" class="col-4">
@@ -88,18 +88,14 @@ export default {
               Authorization: 'JWT ' + token
             }
           }
-
           axios.get(`http://localhost:8000/api/v1/movies/${this.movieId.id}/like/`, requestHeader)
             .then((res)=>{
               // console.log(res)
-              this.ok = res.is_ok
-              // 현재페이지 새로고침
-              location.reload()
+              this.ok = res.data.is_ok
             })
             .catch((e)=>{
               console.log(e)
             })
-        
       }
     },
     checkLoggedIn(){
@@ -112,7 +108,17 @@ export default {
     },
     detail(id){
       this.$router.push(`/detail?id=${id}`)
+    },
+    review(){
+      axios.get(`http://localhost:8000/api/v1/movies/${this.movieId.id}/reviews/`)
+        .then((res)=>{
+          this.reviews = res.data
+        })
+        .catch((e)=>{
+          console.log(e)
+        })
     }
+
   },
   mounted() {
     this.movieId = this.$route.query
@@ -141,11 +147,11 @@ export default {
         .catch((e)=>{
           console.log(e)
         })
-
-      
+      this.review()
     }
   },
-  updated(){
+  // created(): 바뀐 데이터 추적한다.(mounted 전)
+  created(){
     // 영화의 users에 로그인한 유저가 있는경우 ok는 true
     if (this.movieId.id !== undefined && this.movie.users !== undefined){
       // console.log(this.movie.users.length)
@@ -154,16 +160,17 @@ export default {
           this.ok = true
         }
       }
+      this.isAthenticated = this.$session.has('jwt')
     }
-    this.isAthenticated = this.$session.has('jwt')
-    axios.get(`http://localhost:8000/api/v1/movies/${this.movieId.id}/reviews/`)
-      .then((res)=>{
-        this.reviews = res.data
-      })
-      .catch((e)=>{
-        console.log(e)
-      })
+  
   },
+  watch:{
+    reviews:{
+      handler(){
+        this.review()
+      }
+    }
+  }
 }
 </script>
 
