@@ -19,7 +19,7 @@
 
         <ul class="navbar-nav mr-5">
           <form class="form-inline my-2 my-lg-0">
-            <input v-model="keyword" @keyup.enter="search()" class="form-control mr-sm-5 rounded-pill pl-4" style="width:300px;" type="search" placeholder="제목, 감독, 배우로 검색">
+            <input v-model="keyword" @keyup.enter="search(keyword)" class="form-control mr-sm-5 rounded-pill pl-4" style="width: 300px;" type="search" placeholder="제목, 감독, 배우로 검색">
           </form>
           <div v-if="isAuthenticated">
             <li class="nav-item active dropdown mr-5">
@@ -80,8 +80,8 @@ export default {
       this.userId = decodedToken.user_id
       }
     },
-    search(){
-      this.$router.push(`/search?keyword=${this.keyword}`)
+    search(keyword){
+      router.push(`/search?keyword=${keyword}`)
       this.keyword = ''
     }
   },

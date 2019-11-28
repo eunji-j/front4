@@ -1,13 +1,13 @@
 <template>
   <div class="home">
-    <div v-if="recommended" class="card bg-dark text-white" style="border:0;">
+    <div v-if="recommended" class="card bg-dark text-white" style="border:0;" @click="detail">
       <img :src="image" class="card-img" style="object-fit:cover;height:600px;opacity:0.4;">
       <div class="ml-2 card-img-overlay text-light align-items-center">
         <p class="d-flex" style="font-size:4rem; margin-top:200px;font-weight:1000;">맞춤 추천 영화</p>
         <h2 class="mt-4 d-flex">{{recommended.title}}</h2>
         <div class="mt-5 d-flex">
           <h3 class="mr-2">당신의 취향은 </h3>
-          <h3 class="text-warning" v-for="(hashtag, index) in recommended.hashtags" :key="`hashtag-${index}`"> # {{hashtag.content}}</h3>
+          <h3 class="text-warning mr-2" v-for="(hashtag, index) in recommended.hashtags" :key="`hashtag-${index}`"> #{{hashtag.content}}</h3>
         </div>
       </div>
     </div>
@@ -43,6 +43,11 @@ export default {
       genres: [],
       recommended: '',
       image: ''
+    }
+  },
+  methods:{
+    detail(){
+      this.$router.push(`/detail?id=${this.recommended.id}`)
     }
   },
   mounted() {

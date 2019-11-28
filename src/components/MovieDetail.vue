@@ -1,6 +1,6 @@
 <template>
 
-  <div>
+  <div class="mt-5">
     <div class="row text-white text-left mx-5">
       
       <div class="modal" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -14,9 +14,9 @@
         </div>
       </div>
 
-      <div class="col-7">
+      <div class="col-7 mt-5">
         <h1 class="display-4">{{movie.title}}</h1>
-        <h3 class="d-inline"><span class="badge badge-light mr-2">평균 별점</span></h3><h4 class="d-inline">{{movie.score}}</h4><h5 class="d-inline text-muted ml-3">{{movie.rating}}</h5>
+        <h3 class="d-inline"><span class="badge badge-light mr-2">평균 별점</span></h3><h4 class="d-inline"> {{movie.score}}</h4><h5 class="d-inline text-muted ml-3">{{movie.rating}}</h5>
         <!-- <hr class="my-3 bg-white"> -->
         <br><br>
         <h5 v-for="(hashtag, index) in movie.hashtags" :key="`hashtag-${index}`" class="d-inline mr-3 text-info"># {{hashtag.content}}</h5>
@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <div class="col-5">
+      <div class="col-5 d-flex justify-content-center">
         <img :src="movie.image" style="width:65%; opacity:0.7;">
       </div>
     </div>
