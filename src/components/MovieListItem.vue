@@ -1,10 +1,8 @@
 <template>
-    <div class="col-2 text-light" @click="detail">
-      <div id="img">
-        <img :src=movie.image width="100%" alt="이미지가 없습니다.">
-        <p class="d-flex">{{movie.title}}</p>
-      </div>
-    </div>
+  <div class="col-2" @click="detail" id="img">
+    <img :src=movie.image width="100%" alt="이미지가 없습니다.">
+    <!-- <p class="d-flex">{{movie.title}}</p> -->
+  </div>
 </template>
 
 <script>

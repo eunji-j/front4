@@ -119,7 +119,6 @@ export default {
           console.log(e)
         })
     }
-
   },
   mounted() {
     this.movieId = this.$route.query
@@ -135,6 +134,12 @@ export default {
       axios.get(MOVIE_URL)
         .then((res)=>{
           this.movie = res.data
+          // 영화상세정보를 가져오면서 동시에 보고싶어요를 체크했는지 검사한다.
+          for (let i=0; i<res.data.users.length; i++){
+            if (this.movie.users[i] == this.userId){
+              this.ok = true
+            }
+          }
         })
         .catch((e)=>{
           console.log(e)
@@ -148,20 +153,21 @@ export default {
           console.log(e)
         })
       this.review()
+      // console.log(this.movie)
+      // if (this.movieId.id !== undefined && this.movie.users !== undefined){
+      //   // console.log(this.movie.users.length)
+      //   for (let i=0; i<this.movie.users.length; i++){
+      //     if (this.movie.users[i] == this.userId){
+      //       this.ok = true
+      //     }
+      //   }
+      // this.isAthenticated = this.$session.has('jwt')
+      // }
     }
   },
   // created(): 바뀐 데이터 추적한다.(mounted 전)
   created(){
     // 영화의 users에 로그인한 유저가 있는경우 ok는 true
-    if (this.movieId.id !== undefined && this.movie.users !== undefined){
-      // console.log(this.movie.users.length)
-      for (let i=0; i<this.movie.users.length; i++){
-        if (this.movie.users[i] == this.userId){
-          this.ok = true
-        }
-      }
-    this.isAthenticated = this.$session.has('jwt')
-    }
   },
   watch:{
     reviews:{

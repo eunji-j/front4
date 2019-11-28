@@ -1,14 +1,14 @@
 <template>
   <div class="text-light">
     <div class="mt-5">
-      <h3 class="d-flex">선호하는 장르 <h3 class="ml-3"><p v-for="(genre, index) in user.like_genres" :Key="`genre-${index}`" class="badge badge-info">{{genre.name}}</p></h3></h3>
+      <h3 class="d-flex mb-4">선호하는 장르 <h3 class="ml-3"><p v-for="(genre, index) in user.like_genres" :Key="`genre-${index}`" class="badge badge-info mx-1">{{genre.name}}</p></h3></h3>
       
       <h3 class="d-flex">보고싶어요</h3>
       <div v-if="likeMovies.length" class="row">
         <div id="img" v-for="(movie, index) in likeMovies" :key="`movie-${index}`" class="col-12 col-md-6 col-lg-2 my-3">
           <div @click="detail(movie.id)">
             <img :src=movie.image width="100%" alt="">
-            <p class="d-flex">{{movie.title}}</p>
+            <!-- <p class="d-flex">{{movie.title}}</p> -->
           </div>
         </div>
       </div>
@@ -29,7 +29,7 @@
             <h4 class="card-text"><i class="fas fa-star"></i> {{review.star}}</h4>
             <p class="card-text">{{review.created_at}}</p>
           </div>
-          <p class="d-flex">{{review.movie.title}}</p>
+          <!-- <p class="d-flex">{{review.movie.title}}</p> -->
         </div>
       </div>
       <div v-else>

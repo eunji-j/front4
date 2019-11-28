@@ -19,7 +19,7 @@
 
         <ul class="navbar-nav mr-5">
           <form class="form-inline my-2 my-lg-0">
-            <input class="form-control mr-sm-5 rounded-pill pl-4" style="width:300px;" type="search" placeholder="제목, 감독, 배우로 검색">
+            <input v-model="keyword" @keyup.enter="search()" class="form-control mr-sm-5 rounded-pill pl-4" style="width:300px;" type="search" placeholder="제목, 감독, 배우로 검색">
           </form>
           <div v-if="isAuthenticated">
             <li class="nav-item active dropdown mr-5">
@@ -45,7 +45,7 @@
         </ul>
       </div>
     </nav>
-    <div class="px-5 my-5">
+    <div class="px-5 mb-5">
       <!-- Vue.js Router 현재 페이지 갱신하기 -->
       <router-view :key="$route.fullPath"/>
     </div>
@@ -63,6 +63,7 @@ export default {
       isAuthenticated: this.$session.has('jwt'),
       username: '',
       userId: '',
+      keyword: ''
     }
   },
   methods: {
@@ -72,12 +73,16 @@ export default {
     },
     check(){
       if (this.isAuthenticated){
-      this.$session.start()
+        this.$session.start()
       const token = this.$session.get('jwt')
       const decodedToken = jwtDecode(token)
       this.username = decodedToken.username
       this.userId = decodedToken.user_id
       }
+    },
+    search(){
+      this.$router.push(`/search?keyword=${this.keyword}`)
+      this.keyword = ''
     }
   },
   mounted(){
@@ -85,14 +90,8 @@ export default {
   },
   updated() {
     this.isAuthenticated = this.$session.has('jwt')
+    this.check()
   },
-  watch:{
-    username: {
-      handler(){
-        this.check()
-      }
-    }
-  }
 }
 </script>
 

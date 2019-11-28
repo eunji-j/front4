@@ -6,6 +6,7 @@ import Signup from '../views/Signup.vue'
 import MovieDetail from '../components/MovieDetail.vue'
 import Mypage from '../components/Mypage.vue'
 import Select from '../components/Select.vue'
+import Search from '../components/Search.vue'
 Vue.use(VueRouter)
 
 const routes = [
@@ -40,6 +41,11 @@ const routes = [
     path: '/select',
     name: 'select',
     component: Select
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: Search
   }
 ]
 

@@ -1,10 +1,19 @@
 <template>
   <div class="home">
-    <h4 class="d-flex text-light mt-5">맞춤추천영화</h4>
-    <div class="jumbotron jumbotron-fluid">
+    <div v-if="recommended" class="card bg-dark text-white" style="border:0;">
+      <img :src="image" class="card-img" style="object-fit:cover;height:600px;opacity:0.4;">
+      <div class="ml-2 card-img-overlay text-light align-items-center">
+        <p class="d-flex" style="font-size:4rem; margin-top:200px;font-weight:1000;">맞춤 추천 영화</p>
+        <h2 class="mt-4 d-flex">{{recommended.title}}</h2>
+        <div class="mt-5 d-flex">
+          <h3 class="mr-2">당신의 취향은 </h3>
+          <h3 class="text-warning" v-for="(hashtag, index) in recommended.hashtags" :key="`hashtag-${index}`"> # {{hashtag.content}}</h3>
+        </div>
+      </div>
+    </div>
+    <div v-else class="jumbotron jumbotron-fluid">
       <div class="container">
-        <h1 class="display-4">Fluid jumbotron</h1>
-        <p class="lead">This is a modified jumbotron that occupies the entire horizontal space of its parent.</p>
+        <p class="lead">서비스를 이용하려면 로그인이 필요해요</p>
       </div>
     </div>
 
@@ -27,19 +36,22 @@ export default {
   },
   data(){
     return {
+      token: '',
       userId: '',
       movies: [],
       top10: [],
       genres: [],
-      recommended: ''
+      recommended: '',
+      image: ''
     }
   },
   mounted() {
-    this.$session.start()
-    const token = this.$session.get('jwt')
-    const decodedToken = jwtDecode(token)
-    this.userId = decodedToken.user_id
-
+    if (this.$session.has('jwt')){
+      this.$session.start()
+      this.token = this.$session.get('jwt')
+      const decodedToken = jwtDecode(this.token)
+      this.userId = decodedToken.user_id
+    }
     const MOVIE_URL = 'http://localhost:8000/api/v1/movies/'
     axios.get(MOVIE_URL)
       .then((res)=>{
@@ -51,7 +63,7 @@ export default {
     const TOP10_URL = 'http://localhost:8000/api/v1/movies/top10/'
     axios.get(TOP10_URL)
       .then((res)=>{
-        console.log(res)
+        // console.log(res)
         this.top10 = res.data
       })
       .catch((e)=>{
@@ -66,11 +78,16 @@ export default {
           console.log(e)
       })
 
+    const requestHeader = {
+        headers: {
+        Authorization: 'JWT ' + this.token
+        }
+    }
     const RECOMMENDED_URL = `http://localhost:8000/api/v1/movies/${this.userId}/`
-    axios.get(RECOMMENDED_URL)
+    axios.get(RECOMMENDED_URL, requestHeader)
       .then((res)=>{
-        console.log(res)
-          // this.genres = res.data
+        this.recommended = res.data
+        this.image = this.recommended.image
       })
       .catch((e)=>{
         console.log(e)
@@ -79,3 +96,6 @@ export default {
   }  
 }
 </script>
+
+<style>
+</style>
