@@ -11,9 +11,9 @@
         </div>
       </div>
     </div>
-    <div v-else class="jumbotron jumbotron-fluid">
+    <div v-else class="jumbotron jumbotron-fluid bg-dark text-light">
       <div class="container">
-        <p class="lead">서비스를 이용하려면 로그인이 필요해요</p>
+        <p class="lead">맞춤 추천 서비스를 이용하려면 로그인이 필요합니다</p>
       </div>
     </div>
 

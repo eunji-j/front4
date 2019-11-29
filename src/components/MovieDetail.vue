@@ -14,7 +14,7 @@
         </div>
       </div>
 
-      <div class="col-7 mt-5">
+      <div class="col-7 my-5">
         <h1 class="display-4">{{movie.title}}</h1>
         <h3 class="d-inline"><span class="badge badge-light mr-2">평균 별점</span></h3><h4 class="d-inline"> {{movie.score}}</h4><h5 class="d-inline text-muted ml-3">{{movie.rating}}</h5>
         <!-- <hr class="my-3 bg-white"> -->
@@ -38,19 +38,15 @@
         <img :src="movie.image" style="width:65%; opacity:0.7;">
       </div>
     </div>
-    <div class="text-white text-left my-5 mx-5" >
+    <div class="text-white text-left my-5 mx-5">
       <Review :movie="movie"/>
       <ReviewList :reviews="reviews"/>
-      <div class="my-5">
-        <h4>비슷한 작품</h4>
-        <div class="d-flex">
-          <div v-for="(movie2, index) in similarMovie" :key="`movie2-${index}`" class="col-4">
-            <div v-if="movie.title !== movie2.title" @click="detail(movie2.id)">
-              <img :src=movie2.image width="100%" alt="">
-              <p class="text-center">{{movie2.title}}</p>
-            </div>
-          </div>
-        </div>
+    </div>
+    <h4 class="text-white text-left mx-5 mt-5">비슷한 작품</h4> 
+    <div class="mx-5 row">
+      <div v-for="(movie2, index) in similarMovie" :key="`movie2-${index}`" class="col-2">
+          <img id="img" v-if="movie.title != movie2.title" @click="detail(movie2.id)" :src=movie2.image width="100%">
+          <!-- <p class="text-center">{{movie2.title}}</p> -->
       </div>
     </div>
   </div>
@@ -69,13 +65,13 @@ export default {
       similarMovie: [],
       isAthenticated: this.$session.has('jwt'),
       userId: '',
-      ok: '',
+      ok: false,
       reviews: []
     }
   },
   components: {
     Review,
-    ReviewList
+    ReviewList,
   },
   methods: {
     like(){
@@ -122,37 +118,39 @@ export default {
   },
   mounted() {
     this.movieId = this.$route.query
-    if (this.movieId.id !== undefined){
-      if (this.isAthenticated){
-        this.$session.start()
-        const token = this.$session.get('jwt')
-        const decodedToken = jwtDecode(token)
-        this.userId = decodedToken.user_id
-      }
+    this.isAthenticated = this.$session.has('jwt')
+    this.$session.start()
+    
+    const MOVIE_URL = `http://localhost:8000/api/v1/movies/detail/${this.movieId.id}/`
+    axios.get(MOVIE_URL)
+      .then((res)=>{
+        this.movie = res.data
 
-      const MOVIE_URL = `http://localhost:8000/api/v1/movies/detail/${this.movieId.id}/`
-      axios.get(MOVIE_URL)
-        .then((res)=>{
-          this.movie = res.data
+        if (this.isAthenticated){
+          const token = this.$session.get('jwt')
+          const decodedToken = jwtDecode(token)
+          this.userId = decodedToken.user_id
           // 영화상세정보를 가져오면서 동시에 보고싶어요를 체크했는지 검사한다.
           for (let i=0; i<res.data.users.length; i++){
-            if (this.movie.users[i] == this.userId){
+            if (this.movie.users[i] === this.userId){
               this.ok = true
             }
           }
-        })
-        .catch((e)=>{
-          console.log(e)
-        })
-        
-      axios.get(`http://localhost:8000/api/v1/movies/hashtags/${this.movieId.id}/`)
-        .then((res)=>{
-          this.similarMovie = res.data
-        })
-        .catch((e)=>{
-          console.log(e)
-        })
-      this.review()
+        }
+
+      })
+      .catch((e)=>{
+        console.log(e)
+      })
+      
+    axios.get(`http://localhost:8000/api/v1/movies/hashtags/${this.movieId.id}/`)
+      .then((res)=>{
+        this.similarMovie = res.data
+      })
+      .catch((e)=>{
+        console.log(e)
+      })
+    this.review()
       // console.log(this.movie)
       // if (this.movieId.id !== undefined && this.movie.users !== undefined){
       //   // console.log(this.movie.users.length)
@@ -163,11 +161,6 @@ export default {
       //   }
       // this.isAthenticated = this.$session.has('jwt')
       // }
-    }
-  },
-  // created(): 바뀐 데이터 추적한다.(mounted 전)
-  created(){
-    // 영화의 users에 로그인한 유저가 있는경우 ok는 true
   },
   watch:{
     reviews:{
@@ -180,4 +173,12 @@ export default {
 </script>
 
 <style>
+#img {
+  transition: transform .2s; /* Animation */
+}
+#img:hover {
+  opacity: 50%;
+  -webkit-transform: scale(1.2);
+  transform: scale(1.2);
+}
 </style>
